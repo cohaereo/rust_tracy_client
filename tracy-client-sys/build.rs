@@ -107,6 +107,13 @@ fn build_tracy_client() {
             }
         }
         let _ = builder.try_flags_from_environment("TRACY_CLIENT_SYS_CXXFLAGS");
+
+        let tool = cc::Build::default().get_compiler();
+
+        if tool.is_like_msvc() {
+            builder.flag("/MT");
+        };
+
         builder.compile("libtracy-client.a");
         link_dependencies();
     }
